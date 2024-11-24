@@ -1,3 +1,4 @@
+// for reference, this code is lifted from https://whitep4nth3r.com/blog/show-bluesky-likes-on-blog-posts/
 const LIMIT = 59;
 const myDid = "add_your_did";
 const bskyAPI = "https://public.api.bsky.app/xrpc/";
