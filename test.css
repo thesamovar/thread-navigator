@@ -1,0 +1,32 @@
+.post {
+    width: 600px;
+    padding: 10px;
+    border: 1px solid black;
+    border-radius: 5px;
+    margin: 2px;
+    background-color: rgb(233, 241, 255);
+}
+
+.post-author {
+    /* font-weight: bold; */
+    margin-top: 10px;
+    margin-bottom: 0px;
+}
+
+.post-text {
+    margin-bottom: 0px;
+    margin-top: 0px;
+}
+
+.post-indexed {
+    text-decoration: none;
+    color: rgb(115, 133, 163);
+}
+
+.post-displayname {
+    font-weight: bold;
+}
+
+.post-handle {
+    text-decoration: none;
+}
