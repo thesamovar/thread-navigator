@@ -3,10 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Thread Navigator</title>
     <link rel="stylesheet" href="threads.css">
 </head>
 <body>
+    <div>
+        <b>Thread Navigator</b> is a project by <a href="https://neural-reckoning.org/dan_goodman.html">Dan Goodman</a> to experiment with different ways to display deeply nested social media threads. At the moment, it is working with Bluesky and only has a linear, hierarchical thread view. I'll be adding Mastodon support and different views over time. Check out the project and help out at <a href="https://github.com/thesamovar/thread-navigator">https://github.com/thesamovar/thread-navigator</a>. You can create a bookmarklet in your browser with the following code as the URL so that when you're navigating on Bluesky and click the bookmarklet, you'll be taken to a thread view of the current page:<br/><code>javascript:(() => {const url = encodeURIComponent(window.location.href); window.open(`https://thesamovar.github.io/thread-navigator/index.html?url=${url}`, '_blank');})()</code>
+    </div>
     <script type="module">
         import { loadFromURLParams } from './layout.js';
         loadFromURLParams();
