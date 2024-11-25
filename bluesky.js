@@ -5,7 +5,7 @@ import { Post } from './threads.js';
 export class BlueskyAPI {
     static bskyAPI = "https://public.api.bsky.app/xrpc/";
     static getPostURL = `${BlueskyAPI.bskyAPI}app.bsky.feed.getPosts?uris=`;
-    static getThreadURL = `${BlueskyAPI.bskyAPI}app.bsky.feed.getPostThread?uri=`;
+    static getThreadURL = `${BlueskyAPI.bskyAPI}app.bsky.feed.getPostThread?depth=100&uri=`;
     static resolveDID = `${BlueskyAPI.bskyAPI}com.atproto.identity.resolveHandle?handle=`;
     static async analyseURL(url) {
         // example is https://bsky.app/profile/neuralreckoning.bsky.social/post/3laqnjwy4622v
