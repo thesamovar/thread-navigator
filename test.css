@@ -9,8 +9,10 @@
 
 .post-author {
     /* font-weight: bold; */
+    font-size: 80%;
     margin-top: 10px;
     margin-bottom: 0px;
+    text-justify: right;
 }
 
 .post-text {
@@ -29,4 +31,22 @@
 
 .post-handle {
     text-decoration: none;
+}
+
+.post-engagement {
+    margin-top: 10px;
+    margin-bottom: 0px;
+    font-size: 80%;
+}
+
+.engagement-post {
+    border-right: 1px solid black;
+}
+
+.engagement-thread {
+    float: right;
+}
+
+.post-hotness {
+    height: 5px;
 }

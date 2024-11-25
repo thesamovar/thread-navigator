@@ -30,17 +30,13 @@ export class BlueskyAPI {
 
 export class BlueskyPost extends Post {
     render() {
-        const elem = super.render();
+        const postContainer = this.renderPostContainer();
         const postId = this.postobj.uri.split('/').pop();
-        elem.innerHTML = `
-            <p class="post-text">${this.postobj.record.text}</p>
-            <p class="post-author">
-                &mdash;<span class="post-displayname">${this.postobj.author.displayName}</span>
-                (<a class="post-handle" href="https://bsky.app/profile/${this.postobj.author.did}">@${this.postobj.author.handle}</a>)
-                <a class="post-indexed" href="https://bsky.app/profile/${this.postobj.author.did}/post/${postId}">${this.postobj.indexedAt}</a>
-        </p>
-        `;
-        return elem;
+        postContainer.text.innerHTML = this.postobj.record.text;
+        postContainer.author.innerHTML = `&mdash;<span class="post-displayname">${this.postobj.author.displayName}</span>
+                                         (<a class="post-handle" href="https://bsky.app/profile/${this.postobj.author.did}">@${this.postobj.author.handle}</a>)
+                                         <a class="post-indexed" href="https://bsky.app/profile/${this.postobj.author.did}/post/${postId}">${this.postobj.indexedAt}</a>`;
+        return postContainer.post;
         // This is how Bluesky embeds look but this doesn't seem to work because the script doesn't execute
         // elem.innerHTML = `
         // <blockquote class="bluesky-embed" data-bluesky-uri="${post.uri}" data-bluesky-cid="${post.cid}">
@@ -52,19 +48,21 @@ export class BlueskyPost extends Post {
         // <!--<script async src="https://embed.bsky.app/static/embed.js" charset="utf-8"></script>-->
         // `;
     }
-    static fromPost(post) {
-        return new BlueskyPost(post, post.indexedAt);
+    static fromPost(post, thread=null) {
+        return new BlueskyPost(post, post.indexedAt, post.likeCount, post.repostCount+post.quoteCount, thread);
     }
-    static fromPostThread(thread) {
-        const post = BlueskyPost.fromPost(thread.post);
+    static fromPostThread(thread, root=null) {
+        const post = BlueskyPost.fromPost(thread.post, root);
+        // console.log(thread);
         thread.replies.forEach(reply => {
-            const replyPost = BlueskyPost.fromPostThread(reply);
+            const replyPost = BlueskyPost.fromPostThread(reply, post.thread);
             post.replies.push(replyPost);
         });
         return post;
     }
     static async fromURL(url) {
         const thread = await BlueskyAPI.getThread(url);
+        // console.log(thread.thread);
         const post = BlueskyPost.fromPostThread(thread.thread);
         return post;
     }
