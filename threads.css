@@ -55,6 +55,7 @@ body {
 .post-indexed {
     text-decoration: none;
     color: rgb(115, 133, 163);
+    font-size: 80%;
 }
 
 .post-displayname {
