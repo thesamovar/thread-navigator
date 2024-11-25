@@ -53,11 +53,12 @@ export class BlueskyPost extends Post {
     }
     static fromPostThread(thread, root=null) {
         const post = BlueskyPost.fromPost(thread.post, root);
-        // console.log(thread);
-        thread.replies.forEach(reply => {
-            const replyPost = BlueskyPost.fromPostThread(reply, post.thread);
-            post.replies.push(replyPost);
-        });
+        if(thread.replies) {
+            thread.replies.forEach(reply => {
+                const replyPost = BlueskyPost.fromPostThread(reply, post.thread);
+                post.replies.push(replyPost);
+            });
+        }
         return post;
     }
     static async fromURL(url) {

@@ -39,7 +39,7 @@ export class Post {
         return {'post': elem, 'text': pText, 'author': pAuthor, 'engagement': pEngagement, 'hotness': divHotness};
     }
     countsHTML() {
-        return `<span class="engagement-post">↩️ ${this.numReplies} 🔁 ${this.numReposts} ⭐ ${this.numLikes}</span> <span class="engagement-thread">↩️ ${this.recursiveNumReplies} 🔁 ${this.recursiveNumReposts} ⭐ ${this.recursiveNumLikes}</span>`;
+        return `<span class="engagement-post">↩️ ${this.numReplies} 🔁 ${this.numReposts} ⭐ ${this.numLikes}</span> <span class="engagement-thread">Thread: ↩️ ${this.recursiveNumReplies} 🔁 ${this.recursiveNumReposts} ⭐ ${this.recursiveNumLikes}</span>`;
     }
     get numReplies() { return this.replies.length; }
     compute_recursive_counts() {
