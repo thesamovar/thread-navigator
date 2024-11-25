@@ -32,8 +32,8 @@ export class BlueskyPost extends Post {
     render() {
         const postContainer = this.renderPostContainer();
         const postId = this.postobj.uri.split('/').pop();
-        postContainer.text.innerHTML = this.postobj.record.text;
-        postContainer.author.innerHTML = `&mdash;<span class="post-displayname">${this.postobj.author.displayName}</span>
+        postContainer.content.innerHTML = this.postobj.record.text;
+        postContainer.author.innerHTML = `<span class="post-displayname">${this.postobj.author.displayName}</span>
                                          (<a class="post-handle" href="https://bsky.app/profile/${this.postobj.author.did}">@${this.postobj.author.handle}</a>)
                                          <a class="post-indexed" href="https://bsky.app/profile/${this.postobj.author.did}/post/${postId}">${this.postobj.indexedAt}</a>`;
         return postContainer.post;
@@ -47,6 +47,9 @@ export class BlueskyPost extends Post {
         // </blockquote>
         // <!--<script async src="https://embed.bsky.app/static/embed.js" charset="utf-8"></script>-->
         // `;
+    }
+    profileURL() {
+        return this.postobj.author.avatar;
     }
     static fromPost(post, thread=null) {
         return new BlueskyPost(post, post.indexedAt, post.likeCount, post.repostCount+post.quoteCount, thread);

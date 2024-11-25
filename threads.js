@@ -19,24 +19,48 @@ export class Post {
         const postContainer = this.renderPostContainer();
         return postContainer.post;
     }
+    profileURL() {
+        return null;
+    }
     renderPostContainer() {
         const elem = document.createElement('div');
         elem.className = 'post';
-        const pText = document.createElement('p');
-        pText.className = 'post-text';
-        const pAuthor = document.createElement('p');
-        pAuthor.className = 'post-author';
-        const pEngagement = document.createElement('p');
-        pEngagement.className = 'post-engagement';
-        pEngagement.innerHTML = this.countsHTML();
-        const divHotness = document.createElement('div');
-        divHotness.className = 'post-hotness';
-        divHotness.style.backgroundColor = `hsl(${this.relativeEngagement*120}, 100%, 50%)`;
-        elem.appendChild(pText);
-        elem.appendChild(pAuthor);
-        elem.appendChild(divHotness);
-        elem.appendChild(pEngagement);
-        return {'post': elem, 'text': pText, 'author': pAuthor, 'engagement': pEngagement, 'hotness': divHotness};
+
+        // left bar for relative engagement and profile image
+        const divLeft = document.createElement('div');
+        divLeft.className = 'post-left';
+        divLeft.style.backgroundColor = `hsl(0, ${60*this.relativeEngagement}%, 50%)`;
+        const profileImg = document.createElement('img');
+        profileImg.src = this.profileURL();
+        profileImg.className = 'post-profile';
+        divLeft.appendChild(profileImg);
+
+        // right bar for post author, text, engagement
+        const divRight = document.createElement('div');
+        divRight.className = 'post-right';
+
+        // body: author and content
+        const divBody = document.createElement('div');
+        divBody.className = 'post-body';
+        const divAuthor = document.createElement('div');
+        divAuthor.className = 'post-author';
+        const divContent = document.createElement('div');
+        divContent.className = 'post-content';
+        divBody.appendChild(divAuthor);
+        divBody.appendChild(divContent);
+
+        // footer: engagement
+        const divEngagement = document.createElement('div');
+        divEngagement.className = 'post-engagement';
+        divEngagement.innerHTML = this.countsHTML();
+
+        divRight.appendChild(divBody);
+        divRight.appendChild(divEngagement);
+
+        elem.appendChild(divLeft);
+        elem.appendChild(divRight);
+
+        return {'post': elem, 'content': divContent, 'author': divAuthor};
     }
     countsHTML() {
         return `<span class="engagement-post">↩️ ${this.numReplies} 🔁 ${this.numReposts} ⭐ ${this.numLikes}</span> <span class="engagement-thread">Thread: ↩️ ${this.recursiveNumReplies} 🔁 ${this.recursiveNumReposts} ⭐ ${this.recursiveNumLikes}</span>`;
@@ -66,8 +90,8 @@ export class Post {
         return this._recursiveNumReplies;
     }
     get engagement() {
-        // return 0.01*this.recursiveNumLikes + 0.1*this.recursiveNumReposts + this.recursiveNumReplies;
-        return this.recursiveNumReplies;
+        return 0.01*this.recursiveNumLikes + 0.1*this.recursiveNumReposts + this.recursiveNumReplies;
+        // return this.recursiveNumReplies;
     }
     get relativeEngagement() {
         return this.engagement / this.thread.engagement;
