@@ -31,12 +31,7 @@ export class BlueskyAPI {
 export class BlueskyPost extends Post {
     render() {
         const postContainer = this.renderPostContainer();
-        const postId = this.postobj.uri.split('/').pop();
         postContainer.content.innerHTML = this.postobj.record.text;
-        console.log(this.postobj.indexedAt);
-        postContainer.author.innerHTML = `<span class="post-displayname">${this.postobj.author.displayName}</span>
-                                         (<a class="post-handle" href="https://bsky.app/profile/${this.postobj.author.did}">@${this.postobj.author.handle}</a>)
-                                         <a class="post-indexed" href="https://bsky.app/profile/${this.postobj.author.did}/post/${postId}">${new Date(this.postobj.indexedAt).toLocaleString()}</a>`;
         return postContainer.post;
         // This is how Bluesky embeds look but this doesn't seem to work because the script doesn't execute
         // elem.innerHTML = `
@@ -49,8 +44,21 @@ export class BlueskyPost extends Post {
         // <!--<script async src="https://embed.bsky.app/static/embed.js" charset="utf-8"></script>-->
         // `;
     }
-    profileURL() {
+    get profilePhotoURL() {
         return this.postobj.author.avatar;
+    }
+    get displayName() {
+        return this.postobj.author.displayName;
+    }
+    get profileURL() {
+        return `https://bsky.app/profile/${this.postobj.author.did}`;
+    }
+    get postURL() {
+        const postId = this.postobj.uri.split('/').pop();
+        return `https://bsky.app/profile/${this.postobj.author.did}/post/${postId}`;
+    }
+    get handle() {
+        return this.postobj.author.handle;
     }
     static fromPost(post, thread=null) {
         return new BlueskyPost(post, post.indexedAt, post.likeCount, post.repostCount+post.quoteCount, thread);

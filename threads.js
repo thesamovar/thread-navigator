@@ -22,6 +22,18 @@ export class Post {
     profileURL() {
         return null;
     }
+    get profilePhotoURL() {
+        return null;
+    }
+    get displayName() {
+        return null;
+    }
+    get postURL() {
+        return null;
+    }
+    get handle() {
+        return null;
+    }
     renderPostContainer() {
         const elem = document.createElement('div');
         elem.className = 'post';
@@ -31,7 +43,7 @@ export class Post {
         divLeft.className = 'post-left';
         divLeft.style.backgroundColor = `hsl(0, ${60*this.relativeEngagement}%, 50%)`;
         const profileImg = document.createElement('img');
-        profileImg.src = this.profileURL();
+        profileImg.src = this.profilePhotoURL;
         profileImg.className = 'post-profile';
         divLeft.appendChild(profileImg);
 
@@ -59,6 +71,10 @@ export class Post {
 
         elem.appendChild(divLeft);
         elem.appendChild(divRight);
+
+        divAuthor.innerHTML = `<span class="post-displayname">${this.displayName}</span>
+                               (<a class="post-handle" href="${this.profileURL}">@${this.handle}</a>)
+                               <a class="post-indexed" href="${this.postURL}">${new Date(this.datetime).toLocaleString()}</a>`;
 
         return {'post': elem, 'content': divContent, 'author': divAuthor};
     }
