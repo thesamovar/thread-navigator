@@ -3,8 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thread navigator</title>
+    <title>Layout test</title>
     <link rel="stylesheet" href="threads.css">
+    <script type="module" defer>
+        import { reloadWithView } from './layout.js';
+        function do_reloadWithView(view) {
+            reloadWithView(view);
+        }
+    </script>
 </head>
 <body>
     <div>
@@ -62,9 +68,30 @@
             <p>Check out the project and help out at <a href="https://github.com/thesamovar/thread-navigator">https://github.com/thesamovar/thread-navigator</a>.</p>
         </div> 
     </details>
-    <script type="module">
-        import { loadFromURLParams } from './layout.js';
-        loadFromURLParams();
-    </script>
+
+    <div class="post" style="margin-left: 0px;">
+        <div class="post-left" style="background-color: rgb(204, 51, 51);">
+            <img src="https://cdn.bsky.app/img/avatar/plain/did:plc:3wdc7dmw4l7uxgwfwixm7lc5/bafkreiatayjuogwtxuartmw67lrmso6bpixxci6cdrj3ib7clpxp5dlixi@jpeg" class="post-profile">
+        </div>
+        <div class="post-right">
+            <div class="post-body">
+                <div class="post-author">
+                    <span class="post-displayname">Richard Sever</span>
+                    (<a class="post-handle" href="https://bsky.app/profile/did:plc:3wdc7dmw4l7uxgwfwixm7lc5">@richardsever.bsky.social</a>)
+                    <a class="post-indexed" href="https://bsky.app/profile/did:plc:3wdc7dmw4l7uxgwfwixm7lc5/post/3law46gxckc26">14/11/2024, 14:47:51</a>
+                </div>
+                <div class="post-content">
+                    Clarivate will strip eLife of its Impact Factor
+                    They never wanted one but will be interesting to see how this affects submissions given academia's obsession with it.
+                    retractionwatch.com/2024/11/13/e...
+                    But 1/2
+                </div>
+            </div>
+            <div class="post-engagement">
+                <span class="engagement-post">↩️ 14 🔁 80 ⭐ 157</span>
+                <span class="engagement-thread">Thread: ↩️ 117 🔁 117 ⭐ 577</span>
+            </div>
+        </div>
+    </div>    
 </body>
 </html>

@@ -3,9 +3,17 @@ body {
     background-color: lightgray;
 }
 
+details div {
+    margin: 5px;
+    padding: 1em;
+    background-color: white;
+    border: 1px solid black;
+    border-radius: 5px;
+}
+
 .post {
     background-color: white;
-    width: 600px;
+    width: 500px;
     border: 1px solid black;
     border-radius: 5px;
     margin: 5px;
@@ -83,4 +91,15 @@ body {
 
 .engagement-thread {
     float: right;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: 510px 510px 510px;
+}
+
+.grid-header {
+    font-weight: bold;
+    text-align: center;
+    vertical-align: middle;
 }

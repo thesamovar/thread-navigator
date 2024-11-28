@@ -132,13 +132,13 @@ function analyse_masto_thread(the_thread) {
         }
     }
     // now convert into generic MastoPost objects
-    function convert_post(post, root=null) {
-        const newpost = new MastoPost(post, post.created_at, post.favourites_count, post.reblogs_count, root);
+    function convert_post(post, root=null, parent=null) {
+        const newpost = new MastoPost(post, post.created_at, post.favourites_count, post.reblogs_count, root, parent);
         if(root==null) {
             root = newpost;
         }
         if(post.children) {
-            newpost.replies = post.children.map(child => convert_post(child, root));
+            newpost.replies = post.children.map(child => convert_post(child, root, newpost));
         }
         return newpost;
     }

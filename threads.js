@@ -1,7 +1,7 @@
 export class Post {
-    constructor(postobj, datetime, numLikes, numReposts, thread=null) {
+    constructor(postobj, datetime, numLikes, numReposts, thread=null, parent=null) {
         this.postobj = postobj;
-        this.datetime = datetime;
+        this.datetime = new Date(datetime);
         this.replies = [];
         this.numLikes = numLikes;
         this.numReposts = numReposts;
@@ -14,6 +14,7 @@ export class Post {
         } else {
             this.thread = thread;
         }
+        this.parent = parent;
     }
     render() {
         const postContainer = this.renderPostContainer();
@@ -74,7 +75,7 @@ export class Post {
 
         divAuthor.innerHTML = `<span class="post-displayname">${this.displayName}</span>
                                (<a class="post-handle" href="${this.profileURL}">@${this.handle}</a>)
-                               <a class="post-indexed" href="${this.postURL}">${new Date(this.datetime).toLocaleString()}</a>`;
+                               <a class="post-indexed" href="${this.postURL}">${this.datetime.toLocaleString()}</a>`;
 
         return {'post': elem, 'content': divContent, 'author': divAuthor};
     }
@@ -112,13 +113,4 @@ export class Post {
     get relativeEngagement() {
         return this.engagement / this.thread.engagement;
     }
-}
-
-export function addIndentedView(post, level=0) {
-    const postElem = post.render();
-    postElem.style.marginLeft = `${level*40}px`;
-    document.querySelector('body').appendChild(postElem);
-    post.replies.forEach(reply => {
-        addIndentedView(reply, level+1);
-    });
 }

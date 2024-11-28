@@ -60,14 +60,14 @@ export class BlueskyPost extends Post {
     get handle() {
         return this.postobj.author.handle;
     }
-    static fromPost(post, thread=null) {
-        return new BlueskyPost(post, post.indexedAt, post.likeCount, post.repostCount+post.quoteCount, thread);
+    static fromPost(post, thread=null, parent=null) {
+        return new BlueskyPost(post, post.indexedAt, post.likeCount, post.repostCount+post.quoteCount, thread, parent);
     }
-    static fromPostThread(thread, root=null) {
-        const post = BlueskyPost.fromPost(thread.post, root);
+    static fromPostThread(thread, root=null, parent=null) {
+        const post = BlueskyPost.fromPost(thread.post, root, parent);
         if(thread.replies) {
             thread.replies.forEach(reply => {
-                const replyPost = BlueskyPost.fromPostThread(reply, post.thread);
+                const replyPost = BlueskyPost.fromPostThread(reply, post.thread, post);
                 post.replies.push(replyPost);
             });
         }
