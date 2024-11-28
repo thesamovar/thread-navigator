@@ -14,9 +14,13 @@
         <button id="view_tree">Tree view</button>
         <button id="view_linear">Linear context view</button>
     </div>
+    <div>
+        <button id="collapse_all">Collapse all</button>
+        <button id="expand_all">Expand all</button>
+    </div>
     <details>
         <summary>Click for documentation</summary>
-        <div>
+        <div class="documentation">
             <p>The easiest way to use this is to create a <a href="https://en.wikipedia.org/wiki/Bookmarklet">bookmarklet</a> that opens the thread viewer on the thread you currently have open. To do this, create a new bookmark in your browser with title "Navigate thread" or whatever you like, and for the URL insert the following code:</p>
             <pre>javascript:(() => {const url = encodeURIComponent(window.location.href); window.open(`https://thesamovar.github.io/thread-navigator/index.html?url=${url}`, '_blank');})()</pre>
             <p>There are multiple possible thread views, but at the moment you have to specify them by hand by adding to the URL of the loaded page <code>&amp;view=...</code> where the <code>...</code> can be one of:</p>

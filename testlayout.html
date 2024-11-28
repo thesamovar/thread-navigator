@@ -22,7 +22,7 @@
     </div>
     <details>
         <summary>Click for documentation</summary>
-        <div>
+        <div class="documentation">
             <p>The easiest way to use this is to create a <a href="https://en.wikipedia.org/wiki/Bookmarklet">bookmarklet</a> that opens the thread viewer on the thread you currently have open. To do this, create a new bookmark in your browser with title "Navigate thread" or whatever you like, and for the URL insert the following code:</p>
             <pre>javascript:(() => {const url = encodeURIComponent(window.location.href); window.open(`https://thesamovar.github.io/thread-navigator/index.html?url=${url}`, '_blank');})()</pre>
             <p>There are multiple possible thread views, but at the moment you have to specify them by hand by adding to the URL of the loaded page <code>&amp;view=...</code> where the <code>...</code> can be one of:</p>
@@ -69,29 +69,59 @@
         </div> 
     </details>
 
-    <div class="post" style="margin-left: 0px; height: 500px;">
+    <details open>
+        <summary style="list-style: none;">
+    <div class="post" style="margin-left: 0px; ">
         <div class="post-left" style="background-color: rgb(204, 51, 51);">
             <img src="https://cdn.bsky.app/img/avatar/plain/did:plc:3wdc7dmw4l7uxgwfwixm7lc5/bafkreiatayjuogwtxuartmw67lrmso6bpixxci6cdrj3ib7clpxp5dlixi@jpeg" class="post-profile">
         </div>
-        <div class="post-right" style="display: flex; flex-direction: column; min-height: 100%; align-items: stretch;">
-            <div class="post-body">
+        <div class="post-right" style="display: flex; flex-direction: column; ">
+            <div class="post-body" style="flex: 1;">
                 <div class="post-author">
                     <span class="post-displayname">Richard Sever</span>
                     (<a class="post-handle" href="https://bsky.app/profile/did:plc:3wdc7dmw4l7uxgwfwixm7lc5">@richardsever.bsky.social</a>)
                     <a class="post-indexed" href="https://bsky.app/profile/did:plc:3wdc7dmw4l7uxgwfwixm7lc5/post/3law46gxckc26">14/11/2024, 14:47:51</a>
                 </div>
-                <div class="post-content" style="flex-grow: 1;">
+                <div class="post-content">
                     Clarivate will strip eLife of its Impact Factor
                     They never wanted one but will be interesting to see how this affects submissions given academia's obsession with it.
                     retractionwatch.com/2024/11/13/e...
                     But 1/2
                 </div>
             </div>
-            <div class="post-engagement" style="flex-grow: 0; background-color: green;">
+            <div class="post-engagement">
                 <span class="engagement-post">↩️ 14 🔁 80 ⭐ 157</span>
                 <span class="engagement-thread">Thread: ↩️ 117 🔁 117 ⭐ 577</span>
             </div>
         </div>
-    </div>    
+    </div> 
+    </summary>
+    <div class="subthread" style="margin-left: 80px;">
+        <div class="post" style="margin-left: 0px;">
+            <div class="post-left" style="background-color: rgb(204, 51, 51);">
+                <img src="https://cdn.bsky.app/img/avatar/plain/did:plc:3wdc7dmw4l7uxgwfwixm7lc5/bafkreiatayjuogwtxuartmw67lrmso6bpixxci6cdrj3ib7clpxp5dlixi@jpeg" class="post-profile">
+            </div>
+            <div class="post-right" style="display: flex; flex-direction: column; ">
+                <div class="post-body" style="flex: 1;">
+                    <div class="post-author">
+                        <span class="post-displayname">Richard Sever</span>
+                        (<a class="post-handle" href="https://bsky.app/profile/did:plc:3wdc7dmw4l7uxgwfwixm7lc5">@richardsever.bsky.social</a>)
+                        <a class="post-indexed" href="https://bsky.app/profile/did:plc:3wdc7dmw4l7uxgwfwixm7lc5/post/3law46gxckc26">14/11/2024, 14:47:51</a>
+                    </div>
+                    <div class="post-content">
+                        Clarivate will strip eLife of its Impact Factor
+                        They never wanted one but will be interesting to see how this affects submissions given academia's obsession with it.
+                        retractionwatch.com/2024/11/13/e...
+                        But 1/2
+                    </div>
+                </div>
+                <div class="post-engagement">
+                    <span class="engagement-post">↩️ 14 🔁 80 ⭐ 157</span>
+                    <span class="engagement-thread">Thread: ↩️ 117 🔁 117 ⭐ 577</span>
+                </div>
+            </div>
+        </div> 
+    </div>
+    </details>  
 </body>
 </html>

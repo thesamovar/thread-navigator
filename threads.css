@@ -3,7 +3,7 @@ body {
     background-color: lightgray;
 }
 
-details div {
+.documentation {
     margin: 5px;
     padding: 1em;
     background-color: white;
@@ -97,6 +97,12 @@ details div {
     float: right;
 }
 
+.collapse-down {
+    /* border-radius: 3px;
+    background-color: lightgreen; */
+    font-size: 120%;
+}
+
 .grid-container {
     display: grid;
     grid-template-columns: 510px 510px 510px;
@@ -106,4 +112,12 @@ details div {
     font-weight: bold;
     text-align: center;
     vertical-align: middle;
+}
+
+.subthread-post summary {
+    list-style: none;
+}
+
+.subthread-replies {
+    margin-left: 40px;
 }

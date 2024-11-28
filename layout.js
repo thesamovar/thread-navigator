@@ -31,13 +31,33 @@ const viewFuncs = {
 };
 
 export function addTreeView(post, level=0) {
-    const postElem = post.render();
-    postElem.style.marginLeft = `${level*40}px`;
-    document.querySelector('body').appendChild(postElem);
-    post.replies.sort((a, b) => a.datetime - b.datetime);
-    post.replies.forEach(reply => {
-        addTreeView(reply, level+1);
-    });
+    function subthreadElem(post) {
+        if(post.replies.length===0) {
+            return post.render();
+        }
+        const elem = document.createElement('details');
+        elem.open = true;
+        elem.className = 'subthread-post';
+        const summary = document.createElement('summary');
+        summary.appendChild(post.render());
+        elem.appendChild(summary);
+        post.replies.sort((a, b) => a.datetime - b.datetime);
+        const subthread = document.createElement('div');
+        subthread.className = 'subthread-replies';
+        post.replies.forEach(reply => {
+            subthread.appendChild(subthreadElem(reply));
+        });
+        elem.appendChild(subthread);
+        return elem;
+    }
+    document.querySelector('body').appendChild(subthreadElem(post));
+    // const postElem = post.render();
+    // postElem.style.marginLeft = `${level*40}px`;
+    // document.querySelector('body').appendChild(postElem);
+    // post.replies.sort((a, b) => a.datetime - b.datetime);
+    // post.replies.forEach(reply => {
+    //     addTreeView(reply, level+1);
+    // });
 }
 
 export function addLinearContextView(post) {
@@ -111,3 +131,10 @@ export function reloadWithView(view) {
 
 document.querySelector('#view_tree').addEventListener('click', () => reloadWithView('tree'));
 document.querySelector('#view_linear').addEventListener('click', () => reloadWithView('linear'));
+
+document.querySelector('#collapse_all').addEventListener('click', () => {
+    document.querySelectorAll('.subthread-post').forEach(elem => elem.open = false);
+});
+document.querySelector('#expand_all').addEventListener('click', () => { 
+    document.querySelectorAll('.subthread-post').forEach(elem => elem.open = true);
+});
