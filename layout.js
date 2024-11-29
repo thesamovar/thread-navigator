@@ -1,5 +1,6 @@
 import {MastoPost} from './mastodon.js';
 import {BlueskyPost} from './bluesky.js';
+import { Post } from './threads.js';
 
 export async function loadFromURLParams() {
     const urlParams = new URLSearchParams(window.location.search);
@@ -28,9 +29,12 @@ export async function loadFromURL(url, view='indented') {
 const viewFuncs = {
     'tree': addTreeView,
     'linear': addLinearContextView,
+    'linear-condensed': addLinearCondensedContextView,
 };
 
 export function addTreeView(post, level=0) {
+    document.querySelector('#view_tree').style.display = 'none';
+    document.querySelector('.controls-tree').style.display = 'block';
     function subthreadElem(post) {
         if(post.replies.length===0) {
             return post.render();
@@ -51,16 +55,10 @@ export function addTreeView(post, level=0) {
         return elem;
     }
     document.querySelector('body').appendChild(subthreadElem(post));
-    // const postElem = post.render();
-    // postElem.style.marginLeft = `${level*40}px`;
-    // document.querySelector('body').appendChild(postElem);
-    // post.replies.sort((a, b) => a.datetime - b.datetime);
-    // post.replies.forEach(reply => {
-    //     addTreeView(reply, level+1);
-    // });
 }
 
 export function addLinearContextView(post) {
+    document.querySelector('#view_linear').style.display = 'none';
     let all_posts = [];
     function addPostAndReplies(basepost) {
         all_posts.push(basepost);
@@ -121,6 +119,64 @@ export function addLinearContextView(post) {
     });
 }
 
+// New version of lienar context view, use short post format to show parent and replies
+export function addLinearCondensedContextView(post) {
+    document.querySelector('#view_linear_condensed').style.display = 'none';
+    let all_posts = [];
+    function addPostAndReplies(basepost) {
+        all_posts.push(basepost);
+        basepost.replies.forEach(reply => {
+            addPostAndReplies(reply);
+        });
+    }
+    addPostAndReplies(post);
+    all_posts.sort((a, b) => a.datetime - b.datetime);
+    // create a grid layout with 3 columns
+    const grid = document.createElement('div');
+    grid.className = 'grid-container';
+    grid.style.gridTemplateColumns = "260px 520px repeat(auto-fill, 270px)";
+    document.querySelector('body').appendChild(grid);
+    const parentHeader = document.createElement('div');
+    parentHeader.className = 'grid-header';
+    parentHeader.style.gridColumn = "1";
+    parentHeader.style.gridRow = "1";
+    parentHeader.innerHTML = "Parent";
+    const postHeader = document.createElement('div');
+    postHeader.className = 'grid-header';
+    postHeader.style.gridColumn = "2";
+    postHeader.style.gridRow = "1";
+    postHeader.innerHTML = "Post";
+    const replyHeader = document.createElement('div');
+    replyHeader.className = 'grid-header';
+    replyHeader.style.gridColumn = "3";
+    replyHeader.style.gridRow = "1";
+    replyHeader.innerHTML = "First replies";
+    grid.appendChild(parentHeader);
+    grid.appendChild(postHeader);
+    grid.appendChild(replyHeader);
+    let i = 1;
+    function placeElemInGrid(elem, col, row) {
+        elem.style.gridColumn = `${col}`;
+        elem.style.gridRow = `${row}`;
+        grid.appendChild(elem);
+    }
+    all_posts.forEach(post => {
+        i += 1;
+        if(post.parent!=null) {
+            placeElemInGrid(post.parent.renderShort(), 1, i);
+        } else {
+            placeElemInGrid(Post.renderShortWithText(''), 1, i);
+        }
+        placeElemInGrid(post.render(), 2, i);
+        if(post.replies.length>0) {
+            post.replies.sort((a, b) => a.datetime - b.datetime);
+            for(let j=0; j<3 && j<post.replies.length; j++) {
+                placeElemInGrid(post.replies[j].renderShort(), 3+j, i);
+            }
+        }
+    });
+}
+
 export function reloadWithView(view) {
     const urlParams = new URLSearchParams(window.location.search);
     // const url = urlParams.get('url');
@@ -131,6 +187,7 @@ export function reloadWithView(view) {
 
 document.querySelector('#view_tree').addEventListener('click', () => reloadWithView('tree'));
 document.querySelector('#view_linear').addEventListener('click', () => reloadWithView('linear'));
+document.querySelector('#view_linear_condensed').addEventListener('click', () => reloadWithView('linear-condensed'));
 
 document.querySelector('#collapse_all').addEventListener('click', () => {
     document.querySelectorAll('.subthread-post').forEach(elem => elem.open = false);

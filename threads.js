@@ -20,6 +20,15 @@ export class Post {
         const postContainer = this.renderPostContainer();
         return postContainer.post;
     }
+    renderShort() {
+        return Post.renderShortWithText(this.shortHTML());
+    }
+    static renderShortWithText(text) {
+        const div = document.createElement('div');
+        div.className = 'short-post';
+        div.innerHTML = text;
+        return div;
+    }
     profileURL() {
         return null;
     }

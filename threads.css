@@ -121,3 +121,14 @@ body {
 .subthread-replies {
     margin-left: 40px;
 }
+
+.short-post {
+    opacity: .5;
+    width: 250px;
+    flex: 0 1 250px;
+    padding: 5px;
+    margin: 5px;
+    overflow: scroll;
+    vertical-align: middle;
+    max-height: 200px;
+}

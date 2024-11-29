@@ -6,6 +6,9 @@ export class MastoPost extends Post {
         postContainer.content.innerHTML = this.postobj.content;
         return postContainer.post;
     }
+    shortHTML() { // TODO: cut out handles at beginning / end - maybe cut out all html and paragraphs?
+        return `<b>${this.displayName}</b> ${this.postobj.content}`;
+    }
     get profilePhotoURL() {
         return this.postobj.account.avatar;
     }

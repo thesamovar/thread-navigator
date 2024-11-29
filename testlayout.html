@@ -11,17 +11,18 @@
             reloadWithView(view);
         }
     </script>
+    <style>
+        .shortpost {
+            flex: 0 0 250px;
+            padding: 5px;
+            margin: 5px;
+            overflow: scroll;
+        }
+    </style>
 </head>
 <body>
-    <div>
-        <b><a href="https://github.com/thesamovar/thread-navigator">Thread Navigator</a></b> is a project by <a href="https://neural-reckoning.org/dan_goodman.html">Dan Goodman</a> to experiment with different ways to display deeply nested social media threads.
-    </div>
-    <div>
-        <button id="view_tree">Tree view</button>
-        <button id="view_linear">Linear context view</button>
-    </div>
     <details>
-        <summary>Click for documentation</summary>
+        <summary><b><a href="https://github.com/thesamovar/thread-navigator">Thread Navigator</a></b> is a project by <a href="https://neural-reckoning.org/dan_goodman.html">Dan Goodman</a> to experiment with different ways to display deeply nested social media threads. Click for documentation.</summary>
         <div class="documentation">
             <p>The easiest way to use this is to create a <a href="https://en.wikipedia.org/wiki/Bookmarklet">bookmarklet</a> that opens the thread viewer on the thread you currently have open. To do this, create a new bookmark in your browser with title "Navigate thread" or whatever you like, and for the URL insert the following code:</p>
             <pre>javascript:(() => {const url = encodeURIComponent(window.location.href); window.open(`https://thesamovar.github.io/thread-navigator/index.html?url=${url}`, '_blank');})()</pre>
@@ -69,40 +70,14 @@
         </div> 
     </details>
 
-    <details open>
-        <summary style="list-style: none;">
-    <div class="post" style="margin-left: 0px; ">
-        <div class="post-left" style="background-color: rgb(204, 51, 51);">
-            <img src="https://cdn.bsky.app/img/avatar/plain/did:plc:3wdc7dmw4l7uxgwfwixm7lc5/bafkreiatayjuogwtxuartmw67lrmso6bpixxci6cdrj3ib7clpxp5dlixi@jpeg" class="post-profile">
-        </div>
-        <div class="post-right" style="display: flex; flex-direction: column; ">
-            <div class="post-body" style="flex: 1;">
-                <div class="post-author">
-                    <span class="post-displayname">Richard Sever</span>
-                    (<a class="post-handle" href="https://bsky.app/profile/did:plc:3wdc7dmw4l7uxgwfwixm7lc5">@richardsever.bsky.social</a>)
-                    <a class="post-indexed" href="https://bsky.app/profile/did:plc:3wdc7dmw4l7uxgwfwixm7lc5/post/3law46gxckc26">14/11/2024, 14:47:51</a>
-                </div>
-                <div class="post-content">
-                    Clarivate will strip eLife of its Impact Factor
-                    They never wanted one but will be interesting to see how this affects submissions given academia's obsession with it.
-                    retractionwatch.com/2024/11/13/e...
-                    But 1/2
-                </div>
-            </div>
-            <div class="post-engagement">
-                <span class="engagement-post">↩️ 14 🔁 80 ⭐ 157</span>
-                <span class="engagement-thread">Thread: ↩️ 117 🔁 117 ⭐ 577</span>
-            </div>
-        </div>
-    </div> 
-    </summary>
-    <div class="subthread" style="margin-left: 80px;">
-        <div class="post" style="margin-left: 0px;">
+    <div style="display: flex;">
+        <div class="shortpost" style="flex: 0 0 250px;"><b>Richard Sever</b> …WOS will continue to index some eLife articles, so long as they provide a feed of articles that excludes those not ‘validated by peer review’. i.e. supporting evidence is “incomplete” or “inadequate”. Will they? 2/2</div>
+        <div class="post" style="flex: 0 0 auto;">
             <div class="post-left" style="background-color: rgb(204, 51, 51);">
                 <img src="https://cdn.bsky.app/img/avatar/plain/did:plc:3wdc7dmw4l7uxgwfwixm7lc5/bafkreiatayjuogwtxuartmw67lrmso6bpixxci6cdrj3ib7clpxp5dlixi@jpeg" class="post-profile">
             </div>
-            <div class="post-right" style="display: flex; flex-direction: column; ">
-                <div class="post-body" style="flex: 1;">
+            <div class="post-right">
+                <div class="post-body">
                     <div class="post-author">
                         <span class="post-displayname">Richard Sever</span>
                         (<a class="post-handle" href="https://bsky.app/profile/did:plc:3wdc7dmw4l7uxgwfwixm7lc5">@richardsever.bsky.social</a>)
@@ -121,7 +96,17 @@
                 </div>
             </div>
         </div> 
+        <!-- <div style="columns: 12rem auto; flex: 1;">
+            <span class="shortpost"><b>Richard Sever</b> …WOS will continue to index some eLife articles, so long as they provide a feed of articles that excludes those not ‘validated by peer review’. i.e. supporting evidence is “incomplete” or “inadequate”. Will they? 2/2</span>
+            <span class="shortpost"><b>Victor Tatarskiy</b> It's not only that WE are obsessed with it, but also that often funding agencies, especially in developing countries, require publications in journals indexed in WoS/Scopus</span>
+            <span class="shortpost"><b>Lukas Röseler</b> What is keeping them or anyone from computing their average citations per article and putting the number on their website? Or are people browsing JIF rankings to choose journals?</span>
+        </div> -->
+        <div style="flex: 1; display: flex;">
+            <div class="shortpost"><b>Richard Sever</b> …WOS will continue to index some eLife articles, so long as they provide a feed of articles that excludes those not ‘validated by peer review’. i.e. supporting evidence is “incomplete” or “inadequate”. Will they? 2/2</div>
+            <div class="shortpost"><b>Victor Tatarskiy</b> It's not only that WE are obsessed with it, but also that often funding agencies, especially in developing countries, require publications in journals indexed in WoS/Scopus</div>
+            <div class="shortpost"><b>Lukas Röseler</b> What is keeping them or anyone from computing their average citations per article and putting the number on their website? Or are people browsing JIF rankings to choose journals?</div>
+        </div>
     </div>
-    </details>  
+
 </body>
 </html>

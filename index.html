@@ -7,19 +7,8 @@
     <link rel="stylesheet" href="threads.css">
 </head>
 <body>
-    <div>
-        <b><a href="https://github.com/thesamovar/thread-navigator">Thread Navigator</a></b> is a project by <a href="https://neural-reckoning.org/dan_goodman.html">Dan Goodman</a> to experiment with different ways to display deeply nested social media threads.
-    </div>
-    <div>
-        <button id="view_tree">Tree view</button>
-        <button id="view_linear">Linear context view</button>
-    </div>
-    <div>
-        <button id="collapse_all">Collapse all</button>
-        <button id="expand_all">Expand all</button>
-    </div>
     <details>
-        <summary>Click for documentation</summary>
+        <summary><b><a href="https://github.com/thesamovar/thread-navigator">Thread Navigator</a></b> is a project by <a href="https://neural-reckoning.org/dan_goodman.html">Dan Goodman</a> to experiment with different ways to display deeply nested social media threads. Click for documentation.</summary>
         <div class="documentation">
             <p>The easiest way to use this is to create a <a href="https://en.wikipedia.org/wiki/Bookmarklet">bookmarklet</a> that opens the thread viewer on the thread you currently have open. To do this, create a new bookmark in your browser with title "Navigate thread" or whatever you like, and for the URL insert the following code:</p>
             <pre>javascript:(() => {const url = encodeURIComponent(window.location.href); window.open(`https://thesamovar.github.io/thread-navigator/index.html?url=${url}`, '_blank');})()</pre>
@@ -66,6 +55,16 @@
             <p>Check out the project and help out at <a href="https://github.com/thesamovar/thread-navigator">https://github.com/thesamovar/thread-navigator</a>.</p>
         </div> 
     </details>
+    <div>
+        <button id="view_tree">Tree view</button>
+        <button id="view_linear">Linear context view</button>
+        <button id="view_linear_condensed">Linear condensed context view</button>
+    </div>
+    <div class="controls-tree" style="display: none;">
+        <button id="collapse_all">Collapse all</button>
+        <button id="expand_all">Expand all</button>
+        Click a post to collapse/expand its replies.
+    </div>
     <script type="module">
         import { loadFromURLParams } from './layout.js';
         loadFromURLParams();
