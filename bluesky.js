@@ -31,7 +31,7 @@ export class BlueskyAPI {
 export class BlueskyPost extends Post {
     render() {
         const postContainer = this.renderPostContainer();
-        postContainer.content.innerHTML = this.postobj.record.text;
+        postContainer.content.innerHTML = this.renderFacetsHTML();
         return postContainer.post;
         // This is how Bluesky embeds look but this doesn't seem to work because the script doesn't execute
         // elem.innerHTML = `
@@ -43,6 +43,47 @@ export class BlueskyPost extends Post {
         // </blockquote>
         // <!--<script async src="https://embed.bsky.app/static/embed.js" charset="utf-8"></script>-->
         // `;
+    }
+    renderFacetsHTML() {
+        // so facets is nonsense because javascript stores text as utf16 but facet indices are utf8, so
+        // we need to convert between them.
+        const facets = this.postobj.record.facets;
+        if(facets==null) {
+            return this.postobj.record.text;
+        }
+        const textEncoder = new TextEncoder();
+        const textDecoder = new TextDecoder();
+        var text = textEncoder.encode(this.postobj.record.text);
+        facets.sort((a, b) => b.index.byteStart - a.index.byteStart); // we want the last ones first to simplify replace
+        facets.forEach(facet => {
+            const start = facet.index.byteStart;
+            const end = facet.index.byteEnd;
+            const before = text.slice(0, start);
+            let middle = text.slice(start, end);
+            const after = text.slice(end);
+            facet.features.forEach(feature => {
+                if(feature['$type']=='app.bsky.richtext.facet#link') {
+                    const decoded_middle = (new TextDecoder()).decode(middle);
+                    middle = `<a href="${feature.uri}">${decoded_middle}</a>`;
+                    middle = textEncoder.encode(middle);
+                }
+                if(feature['$type']=='app.bsky.richtext.facet#mention') {
+                    const decoded_middle = (new TextDecoder()).decode(middle);
+                    middle = `<a href="https://bsky.app/profile/${decoded_middle.slice(1)}">${decoded_middle}</a>`;
+                    middle = textEncoder.encode(middle);
+                }
+                if(feature['$type']=='app.bsky.richtext.facet#tag') {
+                    const decoded_middle = (new TextDecoder()).decode(middle);
+                    middle = `<a href="https://bsky.app/hashtag/${decoded_middle.slice(1)}">${decoded_middle}</a>`;
+                    middle = textEncoder.encode(middle);
+                }
+            });
+            // this is complete and utter nonsense but it works for now because I couldn't figure out a nicer way
+            // to concatenate Uint8Arrays (sigh).
+            text = textDecoder.decode(before) + textDecoder.decode(middle) + textDecoder.decode(after);
+            text = textEncoder.encode(text);
+        });
+        return textDecoder.decode(text);
     }
     shortHTML() {
         return `<b>${this.displayName}</b> ${this.postobj.record.text}`;
