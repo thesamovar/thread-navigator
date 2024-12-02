@@ -195,3 +195,10 @@ document.querySelector('#collapse_all').addEventListener('click', () => {
 document.querySelector('#expand_all').addEventListener('click', () => { 
     document.querySelectorAll('.subthread-post').forEach(elem => elem.open = true);
 });
+
+document.querySelector('#collapse_all_embeds').addEventListener('click', () => {
+    document.querySelectorAll('.post-embed').forEach(elem => elem.open = false);
+});
+document.querySelector('#expand_all_embeds').addEventListener('click', () => {
+    document.querySelectorAll('.post-embed').forEach(elem => elem.open = true);
+});

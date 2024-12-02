@@ -1,5 +1,26 @@
 import { Post } from './threads.js';
 
+// from https://stackoverflow.com/questions/494143/creating-a-new-dom-element-from-an-html-string-using-built-in-dom-methods-or-pro
+/**
+ * @param {String} HTML representing a single node (which might be an Element,
+                   a text node, or a comment).
+ * @return {Node}
+ */
+function htmlToNode(html) {
+    const template = document.createElement('template');
+    template.innerHTML = html.trim();
+    const nNodes = template.content.childNodes.length;
+    if (nNodes !== 1) {
+        throw new Error(
+            `html parameter must represent a single node; got ${nNodes}. ` +
+            'Note that leading or trailing spaces around an element in your ' +
+            'HTML, like " <img/> ", get parsed as text nodes neighbouring ' +
+            'the element; call .trim() on your input to avoid this.'
+        );
+    }
+    return template.content.firstChild;
+}
+
 // for reference, this code is lifted from https://whitep4nth3r.com/blog/show-bluesky-likes-on-blog-posts/
 // with extra bits thanks to @sneakers-the-rat
 export class BlueskyAPI {
@@ -32,17 +53,53 @@ export class BlueskyPost extends Post {
     render() {
         const postContainer = this.renderPostContainer();
         postContainer.content.innerHTML = this.renderFacetsHTML();
+        if(this.postobj.embed) {
+            const embedContainer = document.createElement('details');
+            // embedContainer.open = true;
+            embedContainer.className = 'post-embed';
+            const summary = document.createElement('summary');
+            summary.innerHTML = '<span class="embedded-content-message">Click to show embedded content</span>';
+            embedContainer.appendChild(summary);
+            if(this.postobj.embed['$type']=='app.bsky.embed.images#view') {
+                const embed = document.createElement('div');
+                embed.className = 'post-embed-images';
+                this.postobj.embed.images.forEach(image => {
+                    const linkElem = document.createElement('a');
+                    linkElem.href = image.fullsize;
+                    const img = document.createElement('img');
+                    img.src = image.thumb;
+                    img.alt = image.alt;
+                    linkElem.appendChild(img);
+                    embed.appendChild(linkElem);
+                });
+                // embed.innerHTML = this.postobj.record.embed.toString();
+                embedContainer.appendChild(embed);
+            }
+            if(this.postobj.embed['$type']=='app.bsky.embed.external#view') {
+                const embed = htmlToNode(`
+                    <div class="post-embed-external">
+                        <a href="${this.postobj.embed.external.uri}">
+                            <img src="${this.postobj.embed.external.thumb}">
+                            <div class="external-title">${this.postobj.embed.external.title}</div>
+                            <div class="external-description">${this.postobj.embed.external.description}</div>
+                            <div class="external-url">${this.postobj.embed.external.uri}</div>
+                        </a>
+                    </div>
+                    `);
+                embedContainer.appendChild(embed);
+            }
+            if(this.postobj.embed['$type']=='app.bsky.embed.record#view') {
+                const rec = this.postobj.embed.record;
+                const embed = htmlToNode(`
+                    <div class="post-embed-record">
+                        <b>${rec.author.displayName}</b><br>${rec.value.text}
+                    </div>
+                    `);
+                embedContainer.appendChild(embed);
+            }
+            postContainer.content.appendChild(embedContainer);
+        }
         return postContainer.post;
-        // This is how Bluesky embeds look but this doesn't seem to work because the script doesn't execute
-        // elem.innerHTML = `
-        // <blockquote class="bluesky-embed" data-bluesky-uri="${post.uri}" data-bluesky-cid="${post.cid}">
-        //     <p lang="en">
-        //         ${post.record.text}
-        //     </p>        
-        //     &mdash; ${post.author.displayName} (<a href="https://bsky.app/profile/${post.author.did}?ref_src=embed">@${post.author.handle}</a>) <a href="https://bsky.app/profile/${post.author.did}/post/${postId}?ref_src=embed">${post.indexedAt}</a>
-        // </blockquote>
-        // <!--<script async src="https://embed.bsky.app/static/embed.js" charset="utf-8"></script>-->
-        // `;
     }
     renderFacetsHTML() {
         // so facets is nonsense because javascript stores text as utf16 but facet indices are utf8, so

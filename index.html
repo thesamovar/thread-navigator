@@ -24,7 +24,7 @@
                     <ul>
                         <li>You need to be on the root post of the thread.</li>
                         <li>Only gets the thread up to depth 6 (not sure why not, should work).</li>
-                        <li>Content isn't formatted, just raw text and no images, cards, etc.</li>
+                        <li>Not all embeds are supported yet (but images, quotes and external links are).</li>
                     </ul>
                 </li>
                 <li>
@@ -32,6 +32,7 @@
                     <ul>
                         <li>Not guaranteed to fetch all replies (although this should work on <a href="https://neuromatch.social">neuromatch.social</a>).</li>
                         <li>Images and cards seems to be broken.</li>
+                        <li>Images and cards don't work with the collapse/expand embed system</li>
                     </ul>
                 </li>
                 <li>There's basically no error handling at the moment so you might need to refresh if it doesn't work.</li>
@@ -55,15 +56,24 @@
             <p>Check out the project and help out at <a href="https://github.com/thesamovar/thread-navigator">https://github.com/thesamovar/thread-navigator</a>.</p>
         </div> 
     </details>
-    <div>
-        <button id="view_tree">Tree view</button>
-        <button id="view_linear">Linear context view</button>
-        <button id="view_linear_condensed">Linear condensed context view</button>
-    </div>
-    <div class="controls-tree" style="display: none;">
-        <button id="collapse_all">Collapse all</button>
-        <button id="expand_all">Expand all</button>
-        Click a post to collapse/expand its replies.
+    <div class="controls">
+        <fieldset class="controls-view">
+            <legend>View</legend>
+            <button id="view_tree">Tree view</button>
+            <button id="view_linear">Linear context view</button>
+            <button id="view_linear_condensed">Linear condensed context view</button>
+        </fieldset>
+        <fieldset class="controls-embeds">
+            <legend>Embedded content</legend>
+            <button id="collapse_all_embeds">Collapse all</button>
+            <button id="expand_all_embeds">Expand all</button>
+        </fieldset>
+        <fieldset class="controls-tree" style="display: none;">
+            <legend>Tree view</legend>
+            <button id="collapse_all">Collapse all</button>
+            <button id="expand_all">Expand all</button>
+            Click a post to collapse/expand its replies.
+        </fieldset>
     </div>
     <script type="module">
         import { loadFromURLParams } from './layout.js';
