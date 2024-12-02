@@ -20,6 +20,15 @@ export class Post {
         const postContainer = this.renderPostContainer();
         return postContainer.post;
     }
+    renderEmbedContainer() {
+        const embedContainer = document.createElement('details');
+        embedContainer.className = 'post-embed';
+        const summary = document.createElement('summary');
+        summary.innerHTML = '<span class="embedded-content-message">Click to show embedded content</span>';
+        embedContainer.appendChild(summary);
+        // embedContainer.open = true;
+        return embedContainer;
+    }
     renderShort() {
         return Post.renderShortWithText(this.shortHTML());
     }
@@ -122,4 +131,25 @@ export class Post {
     get relativeEngagement() {
         return this.engagement / this.thread.engagement;
     }
+}
+
+// from https://stackoverflow.com/questions/494143/creating-a-new-dom-element-from-an-html-string-using-built-in-dom-methods-or-pro
+/**
+ * @param {String} HTML representing a single node (which might be an Element,
+                   a text node, or a comment).
+ * @return {Node}
+ */
+export function htmlToNode(html) {
+    const template = document.createElement('template');
+    template.innerHTML = html.trim();
+    const nNodes = template.content.childNodes.length;
+    if (nNodes !== 1) {
+        throw new Error(
+            `html parameter must represent a single node; got ${nNodes}. ` +
+            'Note that leading or trailing spaces around an element in your ' +
+            'HTML, like " <img/> ", get parsed as text nodes neighbouring ' +
+            'the element; call .trim() on your input to avoid this.'
+        );
+    }
+    return template.content.firstChild;
 }

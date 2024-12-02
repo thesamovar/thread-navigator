@@ -1,25 +1,4 @@
-import { Post } from './threads.js';
-
-// from https://stackoverflow.com/questions/494143/creating-a-new-dom-element-from-an-html-string-using-built-in-dom-methods-or-pro
-/**
- * @param {String} HTML representing a single node (which might be an Element,
-                   a text node, or a comment).
- * @return {Node}
- */
-function htmlToNode(html) {
-    const template = document.createElement('template');
-    template.innerHTML = html.trim();
-    const nNodes = template.content.childNodes.length;
-    if (nNodes !== 1) {
-        throw new Error(
-            `html parameter must represent a single node; got ${nNodes}. ` +
-            'Note that leading or trailing spaces around an element in your ' +
-            'HTML, like " <img/> ", get parsed as text nodes neighbouring ' +
-            'the element; call .trim() on your input to avoid this.'
-        );
-    }
-    return template.content.firstChild;
-}
+import { Post, htmlToNode } from './threads.js';
 
 // for reference, this code is lifted from https://whitep4nth3r.com/blog/show-bluesky-likes-on-blog-posts/
 // with extra bits thanks to @sneakers-the-rat
@@ -54,18 +33,14 @@ export class BlueskyPost extends Post {
         const postContainer = this.renderPostContainer();
         postContainer.content.innerHTML = this.renderFacetsHTML();
         if(this.postobj.embed) {
-            const embedContainer = document.createElement('details');
-            // embedContainer.open = true;
-            embedContainer.className = 'post-embed';
-            const summary = document.createElement('summary');
-            summary.innerHTML = '<span class="embedded-content-message">Click to show embedded content</span>';
-            embedContainer.appendChild(summary);
+            const embedContainer = this.renderEmbedContainer();
             if(this.postobj.embed['$type']=='app.bsky.embed.images#view') {
                 const embed = document.createElement('div');
                 embed.className = 'post-embed-images';
                 this.postobj.embed.images.forEach(image => {
                     const linkElem = document.createElement('a');
                     linkElem.href = image.fullsize;
+                    linkElem.target = '_blank';
                     const img = document.createElement('img');
                     img.src = image.thumb;
                     img.alt = image.alt;

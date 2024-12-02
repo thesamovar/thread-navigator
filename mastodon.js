@@ -1,9 +1,48 @@
-import { Post } from './threads.js';
+import { Post, htmlToNode } from './threads.js';
 
 export class MastoPost extends Post {
     render() {
         const postContainer = this.renderPostContainer();
         postContainer.content.innerHTML = this.postobj.content;
+        if(this.postobj.media_attachments.length>0 || this.postobj.card) {            
+            const embedContainer = this.renderEmbedContainer();
+            if(this.postobj.media_attachments.length>0) {
+                let post_content = '';
+                this.postobj.media_attachments.forEach(media => {
+                    if(media.type=='image' || media.type=='gifv') {
+                        post_content += `<a target="_blank" alt="${media.description}" href="${media.url ?? media.remote_url}"><img src="${media.preview_url}"></a>`;
+                    }
+                });
+                embedContainer.appendChild(htmlToNode(`<div class="post-embed-images">${post_content}</div>`));
+            }
+            if(this.postobj.card) {
+                if(this.postobj.card.html) {
+                    embedContainer.appendChild(htmlToNode(`<div class="post-embed-external">${this.postobj.card.html}</div>`));
+                } else {
+                    const card = this.postobj.card;
+                    let embed_html = '';
+                    if(card.embed_url) {
+                        embed_html += `<img src="${card.embed_url}"></img>`
+                    }
+                    if(card.title) {
+                        embed_html += `<div class="external-title">${card.title}</div>`;
+                    }
+                    if(card.description) {
+                        embed_html += `<div class="external-description">${card.description}</div>`;
+                    }
+                    const embed = htmlToNode(`
+                        <div class="post-embed-external">
+                            <a href="${card.url}">
+                                ${embed_html}
+                                <div class="external-url">${card.url}</div>
+                            </a>
+                        </div>
+                        `);
+                    embedContainer.appendChild(embed);    
+                }
+            }
+            postContainer.content.appendChild(embedContainer);
+        }
         return postContainer.post;
     }
     shortHTML() { // TODO: cut out handles at beginning / end - maybe cut out all html and paragraphs?
