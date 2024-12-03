@@ -17,6 +17,7 @@ export async function loadFromURLParams() {
 }
 
 export async function loadFromURL(url, view='indented') {
+    document.querySelector('#thread-loading').style.display = 'block';
     let post;
     if(url.includes('bsky.app')) {
         post = await BlueskyPost.fromURL(url);
@@ -24,6 +25,7 @@ export async function loadFromURL(url, view='indented') {
         post = await MastoPost.fromURL(url);
     }
     viewFuncs[view](post);
+    document.querySelector('#thread-loading').style.display = 'none';
 }
 
 const viewFuncs = {
