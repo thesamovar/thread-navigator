@@ -57,19 +57,30 @@
             <p>Check out the project and help out at <a href="https://github.com/thesamovar/thread-navigator">https://github.com/thesamovar/thread-navigator</a>.</p>
         </div> 
     </details>
-    <div class="controls">
-        <fieldset class="controls-view">
+    <div class="controls-container">
+        <fieldset class="controls" id="controls-url">
+            <legend>URL</legend>
+            <div id="controls-url-expanded">
+                <label for="thread_url">URL of the Bluesky/Mastodon thread:</label>
+                <input type="text" id="thread_url" value="" size="80" placeholder="https://bsky.app/profile/neuralreckoning.bsky.social/post/3laqnjwy4622v">
+                <button id="load_thread_from_url">Load</button>
+            </div>
+            <div id="controls-url-collapsed" style="display: none;">
+                <button id="show-url-controls">≫</button>
+            </div>
+        </fieldset>
+        <fieldset class="controls" id="controls-view">
             <legend>View</legend>
             <button id="view_tree">Tree view</button>
             <button id="view_linear">Linear context view</button>
             <button id="view_linear_condensed">Linear condensed context view</button>
         </fieldset>
-        <fieldset class="controls-embeds">
+        <fieldset class="controls" id="controls-embeds">
             <legend>Embedded content</legend>
             <button id="collapse_all_embeds">Collapse all</button>
             <button id="expand_all_embeds">Expand all</button>
         </fieldset>
-        <fieldset class="controls-tree" style="display: none;">
+        <fieldset class="controls" id="controls-tree" style="display: none;">
             <legend>Tree view</legend>
             <button id="collapse_all">Collapse all</button>
             <button id="expand_all">Expand all</button>

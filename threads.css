@@ -15,7 +15,7 @@ body {
 
 /*************************************** CONTROLS ***************************************/
 
-.controls {
+.controls-container {
     display: flex;
     flex-wrap: wrap;
 }
@@ -28,25 +28,7 @@ body {
     /* border-radius: 5px; */
 }
 
-.controls-view {
-    border: 1px solid black;
-    background-color:rgb(169, 186, 212);
-    border-radius: 5px;
-    display: inline-block;
-    margin: 5px;
-    padding: 5px;
-}
-
-.controls-tree {
-    border: 1px solid black;
-    background-color:rgb(169, 186, 212);
-    border-radius: 5px;
-    display: inline-block;
-    margin: 5px;
-    padding: 5px;
-}
-
-.controls-embeds {
+.controls {
     border: 1px solid black;
     background-color:rgb(169, 186, 212);
     border-radius: 5px;

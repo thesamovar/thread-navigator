@@ -10,8 +10,8 @@ export async function loadFromURLParams() {
         view = 'tree';
     }
     if(url) {
-        // document.querySelector('#mastodon_url').value = url;
-        // mastoview_load_and_render(url, view);
+        document.querySelector('#controls-url-expanded').style.display = 'none';
+        document.querySelector('#controls-url-collapsed').style.display = 'block';
         loadFromURL(url, view);
     }
 }
@@ -34,7 +34,7 @@ const viewFuncs = {
 
 export function addTreeView(post, level=0) {
     document.querySelector('#view_tree').style.display = 'none';
-    document.querySelector('.controls-tree').style.display = 'block';
+    document.querySelector('#controls-tree').style.display = 'block';
     function subthreadElem(post) {
         if(post.replies.length===0) {
             return post.render();
@@ -179,10 +179,8 @@ export function addLinearCondensedContextView(post) {
 
 export function reloadWithView(view) {
     const urlParams = new URLSearchParams(window.location.search);
-    // const url = urlParams.get('url');
     urlParams.set('view', view);
     window.location.search = urlParams.toString();
-    // window.location.href = `?url=${url}&view=${view}`;
 }
 
 document.querySelector('#view_tree').addEventListener('click', () => reloadWithView('tree'));
@@ -201,4 +199,21 @@ document.querySelector('#collapse_all_embeds').addEventListener('click', () => {
 });
 document.querySelector('#expand_all_embeds').addEventListener('click', () => {
     document.querySelectorAll('.post-embed').forEach(elem => elem.open = true);
+});
+
+function load_url_from_html() {
+    const url = document.querySelector('#thread_url').value;
+    const urlParams = new URLSearchParams(window.location.search);
+    urlParams.set('url', url);
+    window.location.search = urlParams.toString();
+}
+document.querySelector('#load_thread_from_url').addEventListener('click', load_url_from_html);
+document.querySelector('#thread_url').addEventListener('keyup', (event) => {
+    if(event.key === 'Enter') {
+        load_url_from_html();
+    }
+});
+document.querySelector('#show-url-controls').addEventListener('click', () => {
+    document.querySelector('#controls-url-expanded').style.display = 'block';
+    document.querySelector('#controls-url-collapsed').style.display = 'none';
 });
