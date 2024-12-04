@@ -169,6 +169,11 @@ body {
     max-height: 200px;
 }
 
+.short-post::-webkit-scrollbar {
+    display: none;
+}
+
+
 .post-embed {
     margin-top: 0.5em;
 }
