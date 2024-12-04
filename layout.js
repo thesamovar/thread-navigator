@@ -1,6 +1,6 @@
 import {MastoPost} from './mastodon.js';
 import {BlueskyPost} from './bluesky.js';
-import { Post } from './threads.js';
+import { htmlToNode, Post } from './threads.js';
 
 export async function loadFromURLParams() {
     const urlParams = new URLSearchParams(window.location.search);
@@ -77,11 +77,14 @@ export function addTreeView(post, options, level=0) {
         if(post.replies.length===0) {
             return post.render();
         }
-        const elem = document.createElement('details');
-        elem.open = true;
+        const elem = document.createElement('div');
+        // elem.open = true;
         elem.className = 'subthread-post';
-        const summary = document.createElement('summary');
-        summary.appendChild(post.render());
+        const summary = document.createElement('div');
+        const postElem = post.render();
+        const toggleElem = htmlToNode('<div class="tree-post-toggle">▼</div>');
+        postElem.querySelector('.post-left').appendChild(toggleElem);
+        summary.appendChild(postElem);
         elem.appendChild(summary);
         post.replies.sort(sortfunc(options));
         const subthread = document.createElement('div');
@@ -90,6 +93,17 @@ export function addTreeView(post, options, level=0) {
             subthread.appendChild(subthreadElem(reply));
         });
         elem.appendChild(subthread);
+        toggleElem.addEventListener('click', () => {
+            console.log('here');
+            const isOpen = subthread.checkVisibility();
+            if(isOpen) {
+                toggleElem.innerHTML = '▶';
+                subthread.style.display = 'none';
+            } else {
+                toggleElem.innerHTML = '▼';
+                subthread.style.display = 'block';
+            }
+        });
         return elem;
     }
     document.querySelector('#thread-view').replaceChildren(subthreadElem(post));
@@ -226,10 +240,12 @@ document.querySelector('#view_linear').addEventListener('click', () => reloadWit
 document.querySelector('#view_linear_condensed').addEventListener('click', () => reloadWithView('linear-condensed'));
 
 document.querySelector('#collapse_all').addEventListener('click', () => {
-    document.querySelectorAll('.subthread-post').forEach(elem => elem.open = false);
+    document.querySelectorAll('.subthread-replies').forEach(elem => elem.style.display = 'none');
+    document.querySelectorAll('.tree-post-toggle').forEach(elem => elem.innerHTML = '▶');
 });
 document.querySelector('#expand_all').addEventListener('click', () => { 
-    document.querySelectorAll('.subthread-post').forEach(elem => elem.open = true);
+    document.querySelectorAll('.subthread-replies').forEach(elem => elem.style.display = 'block');
+    document.querySelectorAll('.tree-post-toggle').forEach(elem => elem.innerHTML = '▼');
 });
 
 document.querySelector('#collapse_all_embeds').addEventListener('click', () => {

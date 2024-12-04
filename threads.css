@@ -69,6 +69,7 @@ body {
     flex: 0 0 60px;
     margin: 0px;
     padding: 0px;
+    position: relative;
 }
 
 .post-profile {
@@ -222,4 +223,12 @@ body {
     border: 1px solid black;
     border-radius: 5px;
     padding: 5px;
+}
+
+.tree-post-toggle {
+    cursor: pointer;
+    font-size: 150%;
+    position: absolute;
+    bottom: 0;
+    margin-left: 5px;
 }
