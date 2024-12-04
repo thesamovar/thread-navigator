@@ -11,7 +11,7 @@ export async function loadFromURLParams() {
     }
     let sortorder = urlParams.get('sort');
     if(sortorder==null) {
-        sortorder = 'date-desc';
+        sortorder = 'date-asc';
     }
     if(sortorder=='date-asc') {
         document.querySelector('#sort-by-date').innerHTML = 'Date ↑';
