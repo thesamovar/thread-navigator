@@ -14,14 +14,14 @@ export async function loadFromURLParams() {
         sortorder = 'date-desc';
     }
     if(sortorder=='date-asc') {
-        document.querySelector('#sort-by-date').innerHTML = 'Sort by date ↑';
+        document.querySelector('#sort-by-date').innerHTML = 'Date ↑';
     } else {
-        document.querySelector('#sort-by-date').innerHTML = 'Sort by date ↓';
+        document.querySelector('#sort-by-date').innerHTML = 'Date ↓';
     }
     if(sortorder=='engagement-desc') {
-        document.querySelector('#sort-by-engagement').innerHTML = 'Sort by engagement ↑';
+        document.querySelector('#sort-by-engagement').innerHTML = 'Engagement ↑';
     } else {
-        document.querySelector('#sort-by-engagement').innerHTML = 'Sort by engagement ↓';
+        document.querySelector('#sort-by-engagement').innerHTML = 'Engagement ↓';
     }
     const options = {sortorder: sortorder};
     // set bookmarklet
