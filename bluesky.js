@@ -65,12 +65,14 @@ export class BlueskyPost extends Post {
             }
             if(this.postobj.embed['$type']=='app.bsky.embed.record#view') {
                 const rec = this.postobj.embed.record;
-                const embed = htmlToNode(`
-                    <div class="post-embed-record">
-                        <b>${rec.author.displayName}</b><br>${rec.value.text}
-                    </div>
-                    `);
-                embedContainer.appendChild(embed);
+                if(rec.author) {
+                    const embed = htmlToNode(`
+                        <div class="post-embed-record">
+                            <b>${rec.author.displayName}</b><br>${rec.value.text}
+                        </div>
+                        `);
+                    embedContainer.appendChild(embed);
+                }
             }
             postContainer.content.appendChild(embedContainer);
         }

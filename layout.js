@@ -9,6 +9,12 @@ export async function loadFromURLParams() {
     if(view==null) {
         view = 'tree';
     }
+    // set bookmarklet
+    urlParams.delete('url');
+    const bookmarklet_code = "javascript:(() => {const url = encodeURIComponent(window.location.href); window.open(`https://thesamovar.github.io/thread-navigator/index.html?url=${url}&"+urlParams.toString()+"`, '_blank');})()";
+    document.querySelector('#created-bookmarklet-code').innerHTML = bookmarklet_code;
+    document.querySelector('#created-bookmarklet-link').href = bookmarklet_code;
+    // and load it
     if(url) {
         document.querySelector('#controls-url-expanded').style.display = 'none';
         document.querySelector('#controls-url-collapsed').style.display = 'block';
@@ -26,6 +32,7 @@ export async function loadFromURL(url, view='indented') {
     }
     viewFuncs[view](post);
     document.querySelector('#thread-loading').style.display = 'none';
+    document.querySelector('#documentation-tab').open = false;
 }
 
 const viewFuncs = {

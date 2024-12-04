@@ -13,6 +13,14 @@ body {
     border-radius: 5px;
 }
 
+#created-bookmarklet-link-p {
+    margin: 5px;
+    padding: 5px;
+    /* border: 1px solid black; */
+    border-radius: 5px;
+    background-color: rgb(225, 241, 219);
+}
+
 /*************************************** CONTROLS ***************************************/
 
 .controls-container {

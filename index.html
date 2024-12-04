@@ -7,54 +7,54 @@
     <link rel="stylesheet" href="threads.css">
 </head>
 <body>
-    <details>
-        <summary><b><a href="https://github.com/thesamovar/thread-navigator">Thread Navigator</a></b> is a project by <a href="https://neural-reckoning.org/dan_goodman.html">Dan Goodman</a> to experiment with different ways to display deeply nested social media threads. Click for documentation.</summary>
+    <details id="documentation-tab" open>
+        <summary><b><a href="https://github.com/thesamovar/thread-navigator">Thread Navigator</a></b> is a project by <a href="https://neural-reckoning.org/dan_goodman.html">Dan Goodman</a> to experiment with different ways to display deeply nested social media threads. Click here to show/hide documentation.</summary>
         <div class="documentation">
-            <p>The easiest way to use this is to create a <a href="https://en.wikipedia.org/wiki/Bookmarklet">bookmarklet</a> that opens the thread viewer on the thread you currently have open. To do this, create a new bookmark in your browser with title "Navigate thread" or whatever you like, and for the URL insert the following code:</p>
-            <pre>javascript:(() => {const url = encodeURIComponent(window.location.href); window.open(`https://thesamovar.github.io/thread-navigator/index.html?url=${url}`, '_blank');})()</pre>
-            <p>There are multiple possible thread views, but at the moment you have to specify them by hand by adding to the URL of the loaded page <code>&amp;view=...</code> where the <code>...</code> can be one of:</p>
-            <ul>
-                <li><code>&amp;view=tree</code> - indented hierarchy / tree view.</li>
-                <li><code>&amp;view=linear</code> - linear context view: items appear in order of posting in middle column, with parent to the left and first reply to the right. The idea is to help you keep track of long threads over time by seeing the newest posts at the bottom, but also being able to place them in their context.</li>
-            </ul>
-            <p>Current support and issues:</p>
-            <ul>
-                <li>
-                    Bluesky: working (limited).
-                    <ul>
-                        <li>You need to be on the root post of the thread.</li>
-                        <li>Only gets the thread up to depth 6 (not sure why not, should work).</li>
-                        <li>Not all embeds are supported yet (but images, quotes and external links are).</li>
-                    </ul>
-                </li>
-                <li>
-                    Mastodon: working (limited).
-                    <ul>
-                        <li>Not guaranteed to fetch all replies (although this should work on <a href="https://neuromatch.social">neuromatch.social</a>).</li>
-                        <li>Images and cards not well tested yet.</li>
-                    </ul>
-                </li>
-                <li>There's basically no error handling at the moment so you might need to refresh if it doesn't work.</li>
-                <li>
-                    Tree view
-                    <ul>
-                        <li>No sorting options yet.</li>
-                    </ul>
-                </li>
-                <li>
-                    Linear context view
-                </li>
-                <li>
-                    Linear condensed context view
-                </li>
-                <li>
-                    No colouring options for the left bar. The idea is that it shows how much engagement the post and replies have.
-                </li>
-                <li>
-                    No mobile support.
-                </li>
-            </ul>
+            <p>To try it out, copy and paste the URL of a Bluesky or Mastodon thread into the URL box and hit enter. You can experiment with different views and change various options.</p>
+            <p>For quick access, you can add a <a href="https://en.wikipedia.org/wiki/Bookmarklet">bookmarklet</a>. This is a bookmark in your browser that when you click it, will open the thread you currently have open in the thread navigator in a new window. You can use the link below (drag and drop it to your bookmarks bar in Chrome or favorites bar in Edge, or right click and select right click and select "Bookmark Link" in Firefox). Note that this bookmarklet is generated to match your currently selected view and options, so if you have a preferred view, set that up, then re-open this documentation and use the currently displayed bookmarklet.</p>
+            <p id="created-bookmarklet-link-p">⭐ <a id="created-bookmarklet-link" href="javascript:(() => {const url = encodeURIComponent(window.location.href); window.open(`https://thesamovar.github.io/thread-navigator/index.html?url=${url}`, '_blank');})()">Thread Navigator</a></p>
+            <p>If you prefer to see what's happen, you can directly create a bookmark and copy the code below into the URL box of the created bookmark.</p>
+            <pre id="created-bookmarklet-code">javascript:(() => {const url = encodeURIComponent(window.location.href); window.open(`https://thesamovar.github.io/thread-navigator/index.html?url=${url}`, '_blank');})()</pre>
             <p>Check out the project and help out at <a href="https://github.com/thesamovar/thread-navigator">https://github.com/thesamovar/thread-navigator</a>.</p>
+            <details>
+                <summary>Current support and issues</summary>
+                <ul>
+                    <li>
+                        Bluesky: working (limited).
+                        <ul>
+                            <li>You need to be on the root post of the thread.</li>
+                            <li>Only gets the thread up to depth 6 (not sure why not, should work).</li>
+                            <li>Not all embeds are supported yet (but images, quotes and external links are).</li>
+                        </ul>
+                    </li>
+                    <li>
+                        Mastodon: working (limited).
+                        <ul>
+                            <li>Not guaranteed to fetch all replies (although this should work on <a href="https://neuromatch.social">neuromatch.social</a>).</li>
+                            <li>Images and cards not well tested yet.</li>
+                        </ul>
+                    </li>
+                    <li>There's basically no error handling at the moment so you might need to refresh if it doesn't work.</li>
+                    <li>
+                        Tree view
+                        <ul>
+                            <li>No sorting options yet.</li>
+                        </ul>
+                    </li>
+                    <li>
+                        Linear context view
+                    </li>
+                    <li>
+                        Linear condensed context view
+                    </li>
+                    <li>
+                        No colouring options for the left bar. The idea is that it shows how much engagement the post and replies have.
+                    </li>
+                    <li>
+                        No mobile support.
+                    </li>
+                </ul>
+            </details>
         </div> 
     </details>
     <div class="controls-container">
