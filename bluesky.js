@@ -139,7 +139,10 @@ export class BlueskyPost extends Post {
         return this.postobj.author.handle;
     }
     static fromPost(post, thread=null, parent=null) {
-        return new BlueskyPost(post, post.indexedAt, post.likeCount, post.repostCount+post.quoteCount, thread, parent);
+        // console.log(post);
+        const newpost = new BlueskyPost(post, post.indexedAt, post.likeCount, post.repostCount+post.quoteCount, thread, parent);
+        newpost._replyCount = post.replyCount;
+        return newpost;
     }
     static fromPostThread(thread, root=null, parent=null) {
         const post = BlueskyPost.fromPost(thread.post, root, parent);
