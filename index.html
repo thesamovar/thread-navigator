@@ -62,7 +62,7 @@
             <legend>URL</legend>
             <div id="controls-url-expanded">
                 <label for="thread_url">URL of the Bluesky/Mastodon thread:</label>
-                <input type="text" id="thread_url" value="" size="80" placeholder="https://bsky.app/profile/neuralreckoning.bsky.social/post/3laqnjwy4622v">
+                <input type="url" id="thread_url" value="" size="80" placeholder="https://bsky.app/profile/neuralreckoning.bsky.social/post/3laqnjwy4622v">
                 <button id="load_thread_from_url">Load</button>
             </div>
             <div id="controls-url-collapsed" style="display: none;">
@@ -86,6 +86,10 @@
             <button id="expand_all">Expand all</button>
             Click a post to collapse/expand its replies.
         </fieldset>
+        <fieldset class="controls" id="controls-sorting">
+            <legend>Sorting</legend>
+            <button id="sort-by-date">Date ↕</button>
+            <button id="sort-by-engagement">Engagement ↕</button>
     </div>
     <script type="module">
         import { loadFromURLParams } from './layout.js';
@@ -94,5 +98,6 @@
     <div id="thread-loading" style="display: none;">
         <p>Loading thread, this might take a while for long threads...</p>
     </div>
+    <div id="thread-view"></div>
 </body>
 </html>

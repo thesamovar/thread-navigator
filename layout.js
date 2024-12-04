@@ -9,6 +9,21 @@ export async function loadFromURLParams() {
     if(view==null) {
         view = 'tree';
     }
+    let sortorder = urlParams.get('sort');
+    if(sortorder==null) {
+        sortorder = 'date-desc';
+    }
+    if(sortorder=='date-asc') {
+        document.querySelector('#sort-by-date').innerHTML = 'Sort by date ↑';
+    } else {
+        document.querySelector('#sort-by-date').innerHTML = 'Sort by date ↓';
+    }
+    if(sortorder=='engagement-desc') {
+        document.querySelector('#sort-by-engagement').innerHTML = 'Sort by engagement ↑';
+    } else {
+        document.querySelector('#sort-by-engagement').innerHTML = 'Sort by engagement ↓';
+    }
+    const options = {sortorder: sortorder};
     // set bookmarklet
     urlParams.delete('url');
     const bookmarklet_code = "javascript:(() => {const url = encodeURIComponent(window.location.href); window.open(`https://thesamovar.github.io/thread-navigator/index.html?url=${url}&"+urlParams.toString()+"`, '_blank');})()";
@@ -18,11 +33,11 @@ export async function loadFromURLParams() {
     if(url) {
         document.querySelector('#controls-url-expanded').style.display = 'none';
         document.querySelector('#controls-url-collapsed').style.display = 'block';
-        loadFromURL(url, view);
+        loadFromURL(url, view, options);
     }
 }
 
-export async function loadFromURL(url, view='indented') {
+export async function loadFromURL(url, view, options) {
     document.querySelector('#thread-loading').style.display = 'block';
     let post;
     if(url.includes('bsky.app')) {
@@ -30,7 +45,7 @@ export async function loadFromURL(url, view='indented') {
     } else {
         post = await MastoPost.fromURL(url);
     }
-    viewFuncs[view](post);
+    viewFuncs[view](post, options);
     document.querySelector('#thread-loading').style.display = 'none';
     document.querySelector('#documentation-tab').open = false;
 }
@@ -41,7 +56,21 @@ const viewFuncs = {
     'linear-condensed': addLinearCondensedContextView,
 };
 
-export function addTreeView(post, level=0) {
+function sortfunc(options) {
+    if(options.sortorder=='date-desc') {
+        return (a, b) => b.datetime - a.datetime;
+    } else if(options.sortorder=='date-asc') {
+        return (a, b) => a.datetime - b.datetime;
+    } else if(options.sortorder=='engagement-desc') {
+        return (a, b) => b.engagement - a.engagement;
+    } else if(options.sortorder=='engagement-asc') {
+        return (a, b) => a.engagement - b.engagement;
+    } else {
+        return (a, b) => b.datetime - a.datetime; // default
+    }
+}
+
+export function addTreeView(post, options, level=0) {
     document.querySelector('#view_tree').style.display = 'none';
     document.querySelector('#controls-tree').style.display = 'block';
     function subthreadElem(post) {
@@ -54,7 +83,7 @@ export function addTreeView(post, level=0) {
         const summary = document.createElement('summary');
         summary.appendChild(post.render());
         elem.appendChild(summary);
-        post.replies.sort((a, b) => a.datetime - b.datetime);
+        post.replies.sort(sortfunc(options));
         const subthread = document.createElement('div');
         subthread.className = 'subthread-replies';
         post.replies.forEach(reply => {
@@ -63,10 +92,10 @@ export function addTreeView(post, level=0) {
         elem.appendChild(subthread);
         return elem;
     }
-    document.querySelector('body').appendChild(subthreadElem(post));
+    document.querySelector('#thread-view').replaceChildren(subthreadElem(post));
 }
 
-export function addLinearContextView(post) {
+export function addLinearContextView(post, options) {
     document.querySelector('#view_linear').style.display = 'none';
     let all_posts = [];
     function addPostAndReplies(basepost) {
@@ -76,11 +105,11 @@ export function addLinearContextView(post) {
         });
     }
     addPostAndReplies(post);
-    all_posts.sort((a, b) => a.datetime - b.datetime);
+    all_posts.sort(sortfunc(options));
     // create a grid layout with 3 columns
     const grid = document.createElement('div');
     grid.className = 'grid-container';
-    document.querySelector('body').appendChild(grid);
+    document.querySelector('#thread-view').replaceChildren(grid);
     const parentHeader = document.createElement('div');
     parentHeader.className = 'grid-header';
     parentHeader.style.gridColumn = "1";
@@ -118,7 +147,7 @@ export function addLinearContextView(post) {
         grid.appendChild(parentElem);
         grid.appendChild(postElem);
         if(post.replies.length>0) {
-            post.replies.sort((a, b) => a.datetime - b.datetime);
+            post.replies.sort(sortfunc(options));
             const replyElem = post.replies[0].render();
             replyElem.style.opacity = 0.3;
             replyElem.style.gridColumn = "3";
@@ -129,7 +158,7 @@ export function addLinearContextView(post) {
 }
 
 // New version of lienar context view, use short post format to show parent and replies
-export function addLinearCondensedContextView(post) {
+export function addLinearCondensedContextView(post, options) {
     document.querySelector('#view_linear_condensed').style.display = 'none';
     let all_posts = [];
     function addPostAndReplies(basepost) {
@@ -139,12 +168,12 @@ export function addLinearCondensedContextView(post) {
         });
     }
     addPostAndReplies(post);
-    all_posts.sort((a, b) => a.datetime - b.datetime);
+    all_posts.sort(sortfunc(options));
     // create a grid layout with 3 columns
     const grid = document.createElement('div');
     grid.className = 'grid-container';
     grid.style.gridTemplateColumns = "260px 520px repeat(auto-fill, 270px)";
-    document.querySelector('body').appendChild(grid);
+    document.querySelector('#thread-view').replaceChildren(grid);
     const parentHeader = document.createElement('div');
     parentHeader.className = 'grid-header';
     parentHeader.style.gridColumn = "1";
@@ -178,7 +207,7 @@ export function addLinearCondensedContextView(post) {
         }
         placeElemInGrid(post.render(), 2, i);
         if(post.replies.length>0) {
-            post.replies.sort((a, b) => a.datetime - b.datetime);
+            post.replies.sort(sortfunc(options));
             for(let j=0; j<3 && j<post.replies.length; j++) {
                 placeElemInGrid(post.replies[j].renderShort(), 3+j, i);
             }
@@ -225,4 +254,26 @@ document.querySelector('#thread_url').addEventListener('keyup', (event) => {
 document.querySelector('#show-url-controls').addEventListener('click', () => {
     document.querySelector('#controls-url-expanded').style.display = 'block';
     document.querySelector('#controls-url-collapsed').style.display = 'none';
+});
+
+document.querySelector('#sort-by-date').addEventListener('click', () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const sortorder = urlParams.get('sort');
+    if(sortorder=='date-asc') {
+        urlParams.set('sort', 'date-desc');
+    } else {
+        urlParams.set('sort', 'date-asc');
+    }
+    window.location.search = urlParams.toString();
+});
+
+document.querySelector('#sort-by-engagement').addEventListener('click', () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const sortorder = urlParams.get('sort');
+    if(sortorder=='engagement-desc') {
+        urlParams.set('sort', 'engagement-asc');
+    } else {
+        urlParams.set('sort', 'engagement-desc');
+    }
+    window.location.search = urlParams.toString();
 });
