@@ -167,6 +167,15 @@ export class BlueskyPost extends Post {
     static async fromURL(url) {
         const thread = await BlueskyAPI.getThread(url);
         const post = await BlueskyPost.fromPostThread(thread.thread);
+        if(thread.thread.parent) {
+            post.hasUnloadedParent = true;
+            let curPost = thread.thread;
+            while(curPost.parent) {
+                curPost = curPost.parent;
+            }
+            const rootId = curPost.post.uri.split('/').pop();
+            post.rootURL = `https://bsky.app/profile/${curPost.post.author.did}/post/${rootId}`;
+        }
         return post;
     }
     static async fromURI(uri, root=null, parent=null) {

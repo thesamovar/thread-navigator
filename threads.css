@@ -21,6 +21,16 @@ body {
     background-color: rgb(225, 241, 219);
 }
 
+#thread-parent-notice a {
+    cursor: pointer;
+    display: block;
+    margin: 5px;
+    padding: 1em;
+    background-color: lightpink;
+    border-radius: 5px;
+    border: 1px solid black;
+}
+
 /*************************************** CONTROLS ***************************************/
 
 .controls-container {

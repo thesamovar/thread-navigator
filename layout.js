@@ -45,6 +45,15 @@ export async function loadFromURL(url, view, options) {
     } else {
         post = await MastoPost.fromURL(url);
     }
+    if(post.hasUnloadedParent) {
+        const rootLink = document.createElement('a');
+        //rootLink.href = post.rootURL;
+        rootLink.addEventListener('click', () => {
+            reloadWithURL(post.rootURL);
+        });
+        rootLink.innerHTML = "This thread doesn't include the original post, click here to open it.";
+        document.querySelector('#thread-parent-notice').appendChild(rootLink);
+    }
     viewFuncs[view](post, options);
     document.querySelector('#thread-loading').style.display = 'none';
     document.querySelector('#documentation-tab').open = false;
@@ -227,6 +236,12 @@ export function addLinearCondensedContextView(post, options) {
             }
         }
     });
+}
+
+function reloadWithURL(url) {
+    const urlParams = new URLSearchParams(window.location.search);
+    urlParams.set('url', url);
+    window.location.search = urlParams.toString();
 }
 
 export function reloadWithView(view) {
