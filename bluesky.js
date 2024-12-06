@@ -10,9 +10,14 @@ export class BlueskyAPI {
     static async analyseURL(url) {
         // example is https://bsky.app/profile/neuralreckoning.bsky.social/post/3laqnjwy4622v
         // want to break this into ["neuralreckoning.bsky.social", "3laqnjwy4622v"]
+        // another example is https://bsky.app/profile/did:plc:yrhrodaw7exvponxlgo7uf7m/post/3lb3yt5anbd26
+        // in this case the "user" part of the url is a DID so we don't need to resolve it first
         const parts = url.split('/');
         const user = parts[4];
         const postId = parts[6];
+        if(user.startsWith('did:')) {
+            return {"did": user, "postId": postId};
+        }
         const didresponse = await fetch(BlueskyAPI.resolveDID + user);
         const did_json = await didresponse.json();
         const did = did_json['did']
