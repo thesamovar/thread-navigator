@@ -47,7 +47,6 @@ export class BlueskyPost extends Post {
                     linkElem.appendChild(img);
                     embed.appendChild(linkElem);
                 });
-                // embed.innerHTML = this.postobj.record.embed.toString();
                 embedContainer.appendChild(embed);
             }
             if(this.postobj.embed['$type']=='app.bsky.embed.external#view') {
@@ -139,13 +138,16 @@ export class BlueskyPost extends Post {
         return this.postobj.author.handle;
     }
     static fromPost(post, thread=null, parent=null) {
-        // console.log(post);
         const newpost = new BlueskyPost(post, post.indexedAt, post.likeCount, post.repostCount+post.quoteCount, thread, parent);
-        newpost._replyCount = post.replyCount;
         return newpost;
     }
     static fromPostThread(thread, root=null, parent=null) {
         const post = BlueskyPost.fromPost(thread.post, root, parent);
+        if(thread.post.replyCount>0) {
+            if(thread.replies==null || thread.replies.length<thread.post.replyCount) {
+                console.log('No replies for', thread);
+            }
+        }
         if(thread.replies) {
             thread.replies.forEach(reply => {
                 const replyPost = BlueskyPost.fromPostThread(reply, post.thread, post);
@@ -156,7 +158,7 @@ export class BlueskyPost extends Post {
     }
     static async fromURL(url) {
         const thread = await BlueskyAPI.getThread(url);
-        // console.log(thread.thread);
+        console.log(thread.thread);
         const post = BlueskyPost.fromPostThread(thread.thread);
         return post;
     }
