@@ -23,7 +23,10 @@ export class BlueskyAPI {
         const did = res.did;
         const postId = res.postId;
         const postUri = `at://${did}/app.bsky.feed.post/${postId}`;
-        const thread = await (await fetch(BlueskyAPI.getThreadURL + postUri)).json();
+        return BlueskyAPI.getThreadFromURI(postUri);
+    }
+    static async getThreadFromURI(uri) {
+        const thread = await (await fetch(BlueskyAPI.getThreadURL + uri)).json();
         return thread;
     }
 }
@@ -141,25 +144,29 @@ export class BlueskyPost extends Post {
         const newpost = new BlueskyPost(post, post.indexedAt, post.likeCount, post.repostCount+post.quoteCount, thread, parent);
         return newpost;
     }
-    static fromPostThread(thread, root=null, parent=null) {
-        const post = BlueskyPost.fromPost(thread.post, root, parent);
+    static async fromPostThread(thread, root=null, parent=null) {
         if(thread.post.replyCount>0) {
             if(thread.replies==null || thread.replies.length<thread.post.replyCount) {
-                console.log('No replies for', thread);
+                return await BlueskyPost.fromURI(thread.post.uri, root, parent);
             }
         }
+        const post = BlueskyPost.fromPost(thread.post, root, parent);
         if(thread.replies) {
-            thread.replies.forEach(reply => {
-                const replyPost = BlueskyPost.fromPostThread(reply, post.thread, post);
+            for(const reply of thread.replies) {
+                const replyPost = await BlueskyPost.fromPostThread(reply, post.thread, post);
                 post.replies.push(replyPost);
-            });
+            }
         }
         return post;
     }
     static async fromURL(url) {
         const thread = await BlueskyAPI.getThread(url);
-        console.log(thread.thread);
-        const post = BlueskyPost.fromPostThread(thread.thread);
+        const post = await BlueskyPost.fromPostThread(thread.thread);
+        return post;
+    }
+    static async fromURI(uri, root=null, parent=null) {
+        const thread = await BlueskyAPI.getThreadFromURI(uri);
+        const post = await BlueskyPost.fromPostThread(thread.thread, root, parent);
         return post;
     }
 }
